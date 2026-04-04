@@ -27,7 +27,8 @@ export default function NotesClient({ tag }: { tag: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
+
   const [search, setSearch] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
@@ -38,7 +39,7 @@ export default function NotesClient({ tag }: { tag: string }) {
     queryFn: () =>
       fetchNotes({
         tag: tag === "all" ? undefined : tag,
-        page: page + 1,
+        page: page,
         search: debouncedSearch,
         perPage: 12,
       }),
@@ -53,7 +54,13 @@ export default function NotesClient({ tag }: { tag: string }) {
     <div>
       <button onClick={() => setIsCreateOpen(true)}>Create note</button>
 
-      <SearchBox value={search} onChange={setSearch} />
+      <SearchBox
+        value={search}
+        onChange={(value) => {
+          setSearch(value);
+          setPage(1);
+        }}
+      />
 
       <SidebarNotes />
 
@@ -61,8 +68,8 @@ export default function NotesClient({ tag }: { tag: string }) {
 
       <Pagination
         pageCount={data.totalPages}
-        forcePage={page}
-        onPageChange={setPage}
+        forcePage={page - 1}
+        onPageChange={(selected) => setPage(selected + 1)}
       />
 
       {modalNoteId && (
