@@ -7,10 +7,9 @@ import type { Note } from "@/types/note";
 
 interface NoteListProps {
   notes: Note[];
-  tag: string;
 }
 
-export default function NoteList({ notes, tag }: NoteListProps) {
+export default function NoteList({ notes }: NoteListProps) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -22,9 +21,9 @@ export default function NoteList({ notes, tag }: NoteListProps) {
 
   return (
     <ul>
-      {notes.map((note: Note) => (
+      {notes.map((note) => (
         <li key={note.id}>
-          <Link href={`/notes/filter/${tag}/${note.id}`}>
+          <Link href={`?note=${note.id}`}>
             <h3>{note.title}</h3>
           </Link>
 

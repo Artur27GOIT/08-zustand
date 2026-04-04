@@ -15,14 +15,12 @@ export default function Modal({ onClose, children }: ModalProps) {
 
     window.addEventListener("keydown", handleKey);
 
-    // 🔒 Блокуємо прокрутку
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     return () => {
       window.removeEventListener("keydown", handleKey);
 
-      // 🔓 Повертаємо прокрутку
       document.body.style.overflow = originalOverflow;
     };
   }, [onClose]);
