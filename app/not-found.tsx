@@ -1,6 +1,6 @@
 import css from "./Home.module.css";
 
-function notFound() {
+function NotFound() {
   return (
     <>
       <h1 className={css.title}>404 - Page not found</h1>
@@ -11,4 +11,4 @@ function notFound() {
   );
 }
 
-export default notFound;
+export default NotFound;
