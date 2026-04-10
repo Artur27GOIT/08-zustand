@@ -10,6 +10,7 @@ import NoteList from "@/components/NoteList/NoteList";
 import Modal from "@/components/Modal/Modal";
 import NoteDetailsClient from "@/app/notes/[id]/NoteDetails.client";
 import NoteForm from "@/components/NoteForm/NoteForm";
+import Link from "next/link";
 function useDebounce<T>(value: T, delay = 300) {
   const [debounced, setDebounced] = useState(value);
 
@@ -50,7 +51,7 @@ export default function NotesClient({ tag }: { tag: string }) {
 
   return (
     <div>
-      <button onClick={() => setIsCreateOpen(true)}>Create note</button>
+      <Link href="/notes/action/create">Create note +</Link>
 
       <SearchBox
         value={search}
@@ -76,7 +77,7 @@ export default function NotesClient({ tag }: { tag: string }) {
 
       {isCreateOpen && (
         <Modal onClose={() => setIsCreateOpen(false)}>
-          <NoteForm onCancel={() => setIsCreateOpen(false)} />
+          <NoteForm />
         </Modal>
       )}
     </div>

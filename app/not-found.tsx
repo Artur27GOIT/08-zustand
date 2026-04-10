@@ -1,5 +1,16 @@
 import css from "./Home.module.css";
 
+export const metadata = {
+  title: "Page not found — NoteHub",
+  description: "Сторінка не знайдена. Такої сторінки у NoteHub не існує.",
+  openGraph: {
+    title: "Page not found — NoteHub",
+    description: "Сторінка не знайдена. Такої сторінки у NoteHub не існує.",
+    url: "https://your-domain.vercel.app/not-found",
+    images: ["https://ac.goit.global/fullstack/react/notehub-og-meta.jpg"],
+  },
+};
+
 function NotFound() {
   return (
     <>

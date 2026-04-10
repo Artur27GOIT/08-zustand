@@ -1,25 +1,41 @@
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
 import { fetchNotes } from "@/lib/api";
-import NotesClient from "@/app/notes/filter/[...slug]/Notes.client";
+import NotesClient from "./Notes.client";
+import type { Metadata } from "next";
 
-export default async function Page({
+export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string[] }>;
-}) {
-  const { slug } = await params;
-  const tag = slug[0];
+  params: { slug: string[] };
+}): Promise<Metadata> {
+  const slug = params.slug?.[0] || "all";
+
+  const title = `Notes filtered by: ${slug}`;
+  const description = `Перегляд нотаток з фільтром: ${slug}.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://your-domain.vercel.app/notes/filter/${slug}`,
+      images: ["https://ac.goit.global/fullstack/react/notehub-og-meta.jpg"],
+    },
+  };
+}
+
+export default async function Page({ params }: { params: { slug: string[] } }) {
+  const tag = params.slug[0] || "all";
 
   await queryClient.prefetchQuery({
     queryKey: ["notes", tag],
-    queryFn: () => fetchNotes({ tag }), // ВАЖЛИВО: твоя функція очікує об’єкт
+    queryFn: () => fetchNotes({ tag }),
   });
 
-  const dehydratedState = dehydrate(queryClient);
-
   return (
-    <HydrationBoundary state={dehydratedState}>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <NotesClient tag={tag} />
     </HydrationBoundary>
   );
