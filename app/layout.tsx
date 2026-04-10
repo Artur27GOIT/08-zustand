@@ -1,10 +1,11 @@
+import type { Metadata } from "next";
 import { Geist, Geist_Mono, Roboto } from "next/font/google";
 import "./globals.css";
 
 import Header from "@/components/Header/Header";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "NoteHub — Smart Notes Manager",
   description:
     "NoteHub — застосунок для створення, пошуку та керування нотатками.",

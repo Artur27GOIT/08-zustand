@@ -16,7 +16,7 @@ export interface FetchNotesResponse {
 export interface CreateNotePayload {
   title: string;
   content: string;
-  tag: Note["tag"];
+  tag: string;
 }
 
 export type DeleteNoteResponse = Note;

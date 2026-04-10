@@ -1,20 +1,37 @@
 "use client";
 
 import css from "./NoteForm.module.css";
-import { createNoteAction } from "@/lib/actions/createNoteAction";
 import { useNoteStore } from "@/lib/store/noteStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createNote } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 export default function NoteForm() {
   const { draft, setDraft, clearDraft } = useNoteStore();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const mutation = useMutation({
+    mutationFn: createNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      clearDraft();
+      router.push("/notes");
+    },
+  });
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    mutation.mutate({
+      title: draft.title,
+      content: draft.content,
+      tag: draft.tag,
+    });
+  }
 
   return (
-    <form
-      action={async (formData) => {
-        await createNoteAction(formData);
-        clearDraft();
-      }}
-      className={css.form}
-    >
+    <form onSubmit={handleSubmit} className={css.form}>
       <div className={css.formGroup}>
         <label htmlFor="title">Title</label>
         <input
@@ -65,9 +82,7 @@ export default function NoteForm() {
         <button
           type="button"
           className={css.cancelButton}
-          onClick={() => {
-            history.back();
-          }}
+          onClick={() => router.back()}
         >
           Cancel
         </button>

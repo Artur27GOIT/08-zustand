@@ -1,6 +1,7 @@
+import type { Metadata } from "next";
 import css from "./Home.module.css";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Page not found — NoteHub",
   description: "Сторінка не знайдена. Такої сторінки у NoteHub не існує.",
   openGraph: {
@@ -11,7 +12,7 @@ export const metadata = {
   },
 };
 
-function NotFound() {
+export default function NotFound() {
   return (
     <>
       <h1 className={css.title}>404 - Page not found</h1>
@@ -21,5 +22,3 @@ function NotFound() {
     </>
   );
 }
-
-export default NotFound;
