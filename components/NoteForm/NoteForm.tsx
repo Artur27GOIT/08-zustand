@@ -1,31 +1,20 @@
 "use client";
 
 import css from "./NoteForm.module.css";
-import { createNote, type CreateNotePayload } from "@/lib/api";
-import { redirect } from "next/navigation";
+import { createNoteAction } from "@/lib/actions/createNoteAction";
 import { useNoteStore } from "@/lib/store/noteStore";
 
 export default function NoteForm() {
   const { draft, setDraft, clearDraft } = useNoteStore();
 
-  async function createNoteAction(formData: FormData) {
-    "use server";
-
-    const payload: CreateNotePayload = {
-      title: formData.get("title") as string,
-      content: formData.get("content") as string,
-      tag: formData.get("tag") as CreateNotePayload["tag"],
-    };
-
-    await createNote(payload);
-
-    clearDraft();
-
-    redirect("/notes");
-  }
-
   return (
-    <form action={createNoteAction} className={css.form}>
+    <form
+      action={async (formData) => {
+        await createNoteAction(formData);
+        clearDraft();
+      }}
+      className={css.form}
+    >
       <div className={css.formGroup}>
         <label htmlFor="title">Title</label>
         <input
@@ -77,7 +66,7 @@ export default function NoteForm() {
           type="button"
           className={css.cancelButton}
           onClick={() => {
-            redirect("/notes");
+            history.back();
           }}
         >
           Cancel
