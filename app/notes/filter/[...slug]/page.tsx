@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string[] };
+  params: { slug?: string[] };
 }): Promise<Metadata> {
   const slug = params.slug?.[0] || "all";
 
@@ -26,8 +26,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }: { params: { slug: string[] } }) {
-  const tag = params.slug[0] || "all";
+export default async function Page({
+  params,
+}: {
+  params: { slug?: string[] };
+}) {
+  const tag = params.slug?.[0] || "all";
 
   await queryClient.prefetchQuery({
     queryKey: ["notes", tag],
